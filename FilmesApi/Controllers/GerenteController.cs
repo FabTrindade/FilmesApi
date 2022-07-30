@@ -12,18 +12,18 @@ namespace FilmesApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class Gerente_Controller : ControllerBase
+    public class GerenteController : ControllerBase
     {
         private AppDbContext _context;
         private IMapper _mapper;
 
-        public Gerente_Controller(AppDbContext context, IMapper mapper)
+        public GerenteController(AppDbContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;
         }
-
-        public  IActionResult AdicionaGerente (CreateGerenteDto dto)
+        [HttpPost]
+        public IActionResult AdicionaGerente(CreateGerenteDto dto)
         {
             Gerente gerente = _mapper.Map<Gerente>(dto);
             _context.Gerentes.Add(gerente);
@@ -31,7 +31,7 @@ namespace FilmesApi.Controllers
             return CreatedAtAction(nameof(RecuperaGerentePorId), new { Id = gerente.Id }, gerente);
 
         }
-
+        [HttpGet("{id}")]
         public  IActionResult RecuperaGerentePorId(int id)
         {
             Gerente gerente = _context.Gerentes.FirstOrDefault(gerente => gerente.Id == id);
