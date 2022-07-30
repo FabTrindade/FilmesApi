@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FilmesAPI.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -12,6 +13,8 @@ namespace FilmesApi.Models
         [Required]
         public int Id { get; set; }
         public string Nome { get; set; }
+
+        public virtual List<Cinema> Cinemas{ get; set; }
 
     }
 }
