@@ -13,7 +13,21 @@ namespace FilmesAPI.Profiles
         public CinemaProfile()
         {
             CreateMap<CreateCinemaDto, Cinema>();
-            CreateMap<Cinema, ReadCinemaDto>();
+            CreateMap<Cinema, ReadCinemaDto>()
+                .ForMember(cinema => cinema.Gerente, opts => opts
+                .MapFrom(c => new
+                {
+                    c.Gerente.Id,
+                    c.Gerente.Nome
+                }))
+                .ForMember(cinema => cinema.Endereco, opts => opts
+                .MapFrom(c => new
+                {
+                    c.Endereco.Id,
+                    c.Endereco.Logradouro,
+                    c.Endereco.Numero,
+                    c.Endereco.Bairro
+                }));
             CreateMap<UpdateCinemaDto, Cinema>();
         }
     }
