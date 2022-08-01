@@ -41,7 +41,7 @@ namespace FilmesApi.Controllers
             {
                 ReadSessaoDto sessaoDto = _mapper.Map<ReadSessaoDto>(sessao);
 
-                return Ok(sessao);
+                return Ok(sessaoDto);
             }
             return NotFound();
         }
