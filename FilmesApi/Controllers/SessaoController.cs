@@ -33,6 +33,13 @@ namespace FilmesApi.Controllers
             return CreatedAtAction(nameof(RecuperaSessoesPorId), new { Id = sessao.Id }, sessao);
         }
 
+        [HttpGet]
+        public IEnumerable<Sessao> RecuperaSessoes()
+        {
+            
+            return _context.Sessoes.ToList();
+        }
+
         [HttpGet("{id}")]
         public IActionResult RecuperaSessoesPorId (int id)
         {
