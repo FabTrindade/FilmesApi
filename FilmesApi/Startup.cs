@@ -1,4 +1,5 @@
 using FilmesApi.Data;
+using FilmesApi.Services;
 using FilmesAPI.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -36,6 +37,11 @@ namespace FilmesAPI
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             // Register the Swagger generator, defining 1 or more Swagger documents  
             services.AddSwaggerGen();
+            services.AddScoped<FilmeService, FilmeService>();
+            services.AddScoped<CinemaService, CinemaService>();
+            services.AddScoped<EnderecoService, EnderecoService>();
+            services.AddScoped<SessaoService, SessaoService>();
+            services.AddScoped<GerenteService, GerenteService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
