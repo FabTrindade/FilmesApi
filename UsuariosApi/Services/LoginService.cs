@@ -5,16 +5,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using UsuariosApi.Data.Requests;
+using UsuariosApi.Models;
 
 namespace UsuariosApi.Services
 {
     public class LoginService
     {
         private SignInManager<IdentityUser<int>> _signInManager;
+        private TokenService _tokenService;
 
-        public LoginService(SignInManager<IdentityUser<int>> signInManager)
+        public LoginService(SignInManager<IdentityUser<int>> signInManager, TokenService tokenService)
         {
             _signInManager = signInManager;
+            _tokenService = tokenService;
         }
 
         public Result LogaUsuario(LoginRequest request)
@@ -23,9 +26,17 @@ namespace UsuariosApi.Services
                 .PasswordSignInAsync(request.Username, request.Password, false, false);
             if(resultIdentity.Result.Succeeded)
             {
-                return Result.Ok();
+                var identityUser = _signInManager
+                    .UserManager
+                    .Users
+                    .FirstOrDefault(usuario =>
+                    usuario.NormalizedUserName == request.Username.ToUpper());
+                
+                Token token = _tokenService.CreateToken(identityUser);
+                
+                return Result.Ok().WithSuccess(token.Valor);
             }
-            return Result.Fail("Login falou");
+            return Result.Fail("Login falhou!");
         }
     }
 }

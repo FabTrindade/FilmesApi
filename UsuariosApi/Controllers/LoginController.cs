@@ -26,9 +26,9 @@ namespace UsuariosApi.Controllers
 
             if (res.IsFailed)
             {
-                return Unauthorized();
+                return Unauthorized(res.Errors.FirstOrDefault());
             }
-            return Ok();
+            return Ok(res.Successes.FirstOrDefault());
         }
     }
 }
