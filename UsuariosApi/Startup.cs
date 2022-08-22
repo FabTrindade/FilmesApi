@@ -39,6 +39,7 @@ namespace UsuariosApi
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddScoped<CadastroService, CadastroService>();
             services.AddScoped<LoginService, LoginService>();
+            services.AddScoped<LogoutService, LogoutService>();
             services.AddScoped<TokenService, TokenService>();
         }
 
