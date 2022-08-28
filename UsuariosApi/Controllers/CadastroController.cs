@@ -28,7 +28,7 @@ namespace UsuariosApi.Controllers
             {
                 return StatusCode(500);
             }
-            return Ok();
+            return Ok(res.Successes.FirstOrDefault());
         }
     }
 }
