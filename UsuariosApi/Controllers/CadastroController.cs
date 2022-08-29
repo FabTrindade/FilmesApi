@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using UsuariosApi.Data.Dtos;
+using UsuariosApi.Data.Requests;
 using UsuariosApi.Services;
 
 namespace UsuariosApi.Controllers
@@ -29,6 +30,17 @@ namespace UsuariosApi.Controllers
                 return StatusCode(500);
             }
             return Ok(res.Successes.FirstOrDefault());
+        }
+
+        [HttpPost("/ativa")]
+        public IActionResult AtivaUsuario(AtivaRequest request)
+        {
+            Result res = _cadastroService.AtivaUsuario(request);
+            if (res.IsFailed)
+            {
+                return StatusCode(500);
+            }
+            return Ok(res.Successes);
         }
     }
 }
