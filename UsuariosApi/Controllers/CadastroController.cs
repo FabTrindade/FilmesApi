@@ -32,8 +32,8 @@ namespace UsuariosApi.Controllers
             return Ok(res.Successes.FirstOrDefault());
         }
 
-        [HttpPost("/ativa")]
-        public IActionResult AtivaUsuario(AtivaRequest request)
+        [HttpGet("/ativa")]
+        public IActionResult AtivaUsuario([FromQuery] AtivaRequest request)
         {
             Result res = _cadastroService.AtivaUsuario(request);
             if (res.IsFailed)

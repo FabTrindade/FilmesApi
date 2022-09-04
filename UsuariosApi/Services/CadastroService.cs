@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web;
 using UsuariosApi.Data.Dtos;
 using UsuariosApi.Data.Requests;
 using UsuariosApi.Models;
@@ -32,9 +33,15 @@ namespace UsuariosApi.Services
             
             if(resIdentity.Result.Succeeded)
             {
-                var code = _userManager.GenerateEmailConfirmationTokenAsync(usuarioIdentity);
-                _emailService.EnviaEmail(new[] { usuarioIdentity.Email }, "Ativa Cadastro", usuarioIdentity.Id, code.Result);
-                return Result.Ok().WithSuccess(code.Result);
+                var code = _userManager.GenerateEmailConfirmationTokenAsync(usuarioIdentity).Result;
+                var encodeCode = HttpUtility.UrlEncode(code);
+                _emailService.EnviaEmail(
+                    new[] { usuarioIdentity.Email },
+                    "Ativa Cadastro",
+                    usuarioIdentity.Id,
+                    encodeCode
+                    );
+                return Result.Ok().WithSuccess(code);
             }
             return Result.Fail("Falha ao cadastrar usuario");
         }
