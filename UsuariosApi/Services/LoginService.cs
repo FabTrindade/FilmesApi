@@ -39,12 +39,9 @@ namespace UsuariosApi.Services
             return Result.Fail("Login falhou!");
         }
 
-        public Result ResetSenhaUsuario(ResetRequest request)
+        public Result SolicitaResetSenhaUsuario(ResetRequest request)
         {
-            IdentityUser<int> identityUser = _signInManager
-                .UserManager
-                .Users
-                .FirstOrDefault(u => u.NormalizedEmail == request.Email.ToUpper());
+            IdentityUser<int> identityUser = RecuperaUsuarioPorEmail(request.Email);
 
             if (identityUser!= null)
             {
@@ -55,6 +52,30 @@ namespace UsuariosApi.Services
             }
 
             return Result.Fail("Falha ao solicitar redefinição de senha");
+        }
+
+        public Result ResetSenhaUsuario(EfetuaResetRequest request)
+        {
+            IdentityUser<int> identityUser = RecuperaUsuarioPorEmail(request.Email);
+
+            IdentityResult identityResult = _signInManager
+                .UserManager
+                .ResetPasswordAsync(identityUser, request.Token, request.RePassword).Result;
+
+
+            if (identityResult.Succeeded)
+            {
+                return Result.Ok().WithSuccess("Senha alterada com sucesso!");
+            }
+            return Result.Fail("Erro ao alterar senha!");
+        }
+
+        private IdentityUser<int> RecuperaUsuarioPorEmail(string email)
+        {
+            return _signInManager
+                            .UserManager
+                            .Users
+                            .FirstOrDefault(u => u.NormalizedEmail == email.ToUpper());
         }
     }
 }
