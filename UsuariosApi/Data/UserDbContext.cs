@@ -17,6 +17,31 @@ namespace UsuariosApi.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            IdentityUser<int> admin = new IdentityUser<int>
+            {
+                UserName = "admin",
+                NormalizedUserName = "ADMIN",
+                Email = "admin@admin.com",
+                NormalizedEmail = "ADMIN@ADMIN.COM",
+                EmailConfirmed = true,
+                SecurityStamp = Guid.NewGuid().ToString(),
+                Id = 99999
+            };
+            PasswordHasher<IdentityUser<int>> hasher = new PasswordHasher<IdentityUser<int>>();
+
+            admin.PasswordHash = hasher.HashPassword(admin, "Admin123!");
+
+            modelBuilder.Entity<IdentityUser<int>>().HasData(admin);
+
+            modelBuilder.Entity<IdentityRole<int>>().HasData(
+                new IdentityRole<int> { Id = 99999, Name = "admin", NormalizedName = "ADMIN" }
+            );
+
+            modelBuilder.Entity<IdentityUserRole<int>>().HasData(
+                new IdentityUserRole<int> { RoleId = 99999, UserId = 99999 }
+                );
+
             modelBuilder.Entity<IdentityUser>(entity =>
             {
                 entity.Property(m => m.Id).HasMaxLength(110);
