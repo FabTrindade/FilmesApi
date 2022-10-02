@@ -11,10 +11,10 @@ namespace UsuariosApi.Services
 {
     public class LoginService
     {
-        private SignInManager<IdentityUser<int>> _signInManager;
+        private SignInManager<CustomIdentityUser> _signInManager;
         private TokenService _tokenService;
 
-        public LoginService(SignInManager<IdentityUser<int>> signInManager, TokenService tokenService)
+        public LoginService(SignInManager<CustomIdentityUser> signInManager, TokenService tokenService)
         {
             _signInManager = signInManager;
             _tokenService = tokenService;
@@ -43,7 +43,7 @@ namespace UsuariosApi.Services
 
         public Result SolicitaResetSenhaUsuario(ResetRequest request)
         {
-            IdentityUser<int> identityUser = RecuperaUsuarioPorEmail(request.Email);
+            CustomIdentityUser identityUser = RecuperaUsuarioPorEmail(request.Email);
 
             if (identityUser!= null)
             {
@@ -58,7 +58,7 @@ namespace UsuariosApi.Services
 
         public Result ResetSenhaUsuario(EfetuaResetRequest request)
         {
-            IdentityUser<int> identityUser = RecuperaUsuarioPorEmail(request.Email);
+            CustomIdentityUser identityUser = RecuperaUsuarioPorEmail(request.Email);
 
             IdentityResult identityResult = _signInManager
                 .UserManager
@@ -72,7 +72,7 @@ namespace UsuariosApi.Services
             return Result.Fail("Erro ao alterar senha!");
         }
 
-        private IdentityUser<int> RecuperaUsuarioPorEmail(string email)
+        private CustomIdentityUser RecuperaUsuarioPorEmail(string email)
         {
             return _signInManager
                             .UserManager

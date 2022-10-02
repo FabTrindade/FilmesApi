@@ -6,10 +6,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using UsuariosApi.Models;
 
 namespace UsuariosApi.Data
 {
-    public class UserDbContext : IdentityDbContext<IdentityUser<int>, IdentityRole<int>, int>
+    public class UserDbContext : IdentityDbContext<CustomIdentityUser, IdentityRole<int>, int>
     {
         private IConfiguration _configuration;
 
@@ -22,7 +23,7 @@ namespace UsuariosApi.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            IdentityUser<int> admin = new IdentityUser<int>
+            CustomIdentityUser admin = new CustomIdentityUser
             {
                 UserName = "admin",
                 NormalizedUserName = "ADMIN",
@@ -32,12 +33,12 @@ namespace UsuariosApi.Data
                 SecurityStamp = Guid.NewGuid().ToString(),
                 Id = 99999
             };
-            PasswordHasher<IdentityUser<int>> hasher = new PasswordHasher<IdentityUser<int>>();
+            PasswordHasher<CustomIdentityUser> hasher = new PasswordHasher<CustomIdentityUser>();
 
             admin.PasswordHash = hasher.HashPassword(admin, _configuration.GetValue<string>("admininfo:password"));
             
 
-            modelBuilder.Entity<IdentityUser<int>>().HasData(admin);
+            modelBuilder.Entity<CustomIdentityUser>().HasData(admin);
 
             modelBuilder.Entity<IdentityRole<int>>().HasData(
                 new IdentityRole<int> { Id = 99999, Name = "admin", NormalizedName = "ADMIN" }
